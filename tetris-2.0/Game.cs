@@ -9,16 +9,15 @@ namespace tetris_2._0;
 class Game
 {
     ScheduleTimer? _timer;
-
     public bool Paused { get; private set; }
-    public int Score { get; set; }
-    public int Level { get; set; }
-    public int ClearedRows { get; set; }
-    public int GameSpeed { get; set; }
+    private int Score { get; set; }
+    private int Level { get; set; }
+    private int ClearedRows { get; set; }
+    private int GameSpeed { get; set; }
     public bool GameOver { get; private set; }
 
-    public GameGrid Grid;
-    public BlockQueue BlockQueue;
+    public readonly GameGrid Grid;
+    public readonly BlockQueue BlockQueue;
     public Game(int rows,int columns)
     {
         Level = 1;
@@ -87,14 +86,14 @@ class Game
         }
     }
 
-    void Tick()
+    private void Tick()
     {
         MoveBlockDown();
         Draw();
         ScheduleNextTick();
     }
 
-    void ScheduleNextTick()
+    private void ScheduleNextTick()
     {
         // the game will automatically update itself every half a second, adjust as needed
         _timer = new ScheduleTimer(GameSpeed, Tick);
@@ -112,16 +111,16 @@ class Game
         return true;
     }
 
-    public void RotateRight()
+    private void RotateRight()
     {
         CurrentBlock.RotateRight();
         if (!BlockFits())
         {
-            CurrentBlock.RotateLeft();;
+            CurrentBlock.RotateLeft();
         }
     }
 
-    public void RotateLeft()
+    private void RotateLeft()
     {
         CurrentBlock.RotateLeft();
         if (!BlockFits())
@@ -130,7 +129,7 @@ class Game
         }
     }
 
-    public void MoveBlockRight()
+    private void MoveBlockRight()
     {
         CurrentBlock.Move(0,1);
         if (!BlockFits())
@@ -139,7 +138,7 @@ class Game
         }
     }
 
-    public void MoveBlockLeft()
+    private void MoveBlockLeft()
     {
         CurrentBlock.Move(0,-1);
         if (!BlockFits())
@@ -177,7 +176,7 @@ class Game
         SetGameSpeed();
     }
 
-    public void MoveBlockDown()
+    private void MoveBlockDown()
     {
         CurrentBlock.Move(1,0);
         if (!BlockFits())
@@ -192,9 +191,9 @@ class Game
         Console.Clear();
         DrawGrid(Grid);
         Console.ForegroundColor = Grid.TileColors[0];
-        Console.WriteLine("Score: " + Score + "  Level: " + Level);
+        Console.WriteLine("Score: " + Score);
+        Console.WriteLine("Level: " + Level);
         Console.WriteLine("Cleared Rows: " + ClearedRows);
-        Console.WriteLine("Speed: " + GameSpeed );
         if (Paused)
         {
             Console.WriteLine("Paused");
@@ -218,7 +217,6 @@ class Game
                 Console.ForegroundColor = grid.TileColors[tile];
                 Console.Write(grid.TileCharacters[tile]);
             }
-
             Console.WriteLine(" ");
         }
     }
@@ -291,10 +289,10 @@ class Game
         }
     }
     //will give a range of 200 - 700 dependant on level
-    public void SetGameSpeed()
+    private void SetGameSpeed()
     {
-        double A = 700.0;
-        double k = (1.0 / 10.0) * Math.Log(A / 200.0);
-        GameSpeed = (int)Math.Round(A * Math.Exp(-k * Level));
+        var a = 700.0;
+        var k = (1.0 / 10.0) * Math.Log(a / 200.0);
+        GameSpeed = (int)Math.Round(a * Math.Exp(-k * Level));
     }
 }

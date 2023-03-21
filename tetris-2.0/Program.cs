@@ -1,11 +1,10 @@
 ﻿using tetris_2._0;
 
-var rows = 16;
+var rows = 20;
 var columns = 10;
 var game = new Game(rows,columns);
 Console.CursorVisible = false;
 game.Start();
-
 
 while (!game.GameOver)
 {

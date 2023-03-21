@@ -1,19 +1,17 @@
-using System.Data;
-
 namespace tetris_2._0;
 
 public class GameGrid
 {
     public int Columns { get; }
     public int Rows { get; }
-    public int[,] Grid;
+    public readonly int[,] Grid;
 
-    public char[] TileCharacters =
+    public readonly char[] TileCharacters =
     {
         '-', 'I', 'J', 'L', 'O', 'S', 'T', 'Z'
     };
 
-    public ConsoleColor[] TileColors =
+    public readonly ConsoleColor[] TileColors =
     {
         ConsoleColor.Black,
         ConsoleColor.Cyan,
@@ -39,7 +37,7 @@ public class GameGrid
         }
     }
 
-    public bool IsInside(int r, int c)
+    private bool IsInside(int r, int c)
     {
         return r >= 0 && r < Rows && c >= 0 && c < Columns;
     }
@@ -49,7 +47,7 @@ public class GameGrid
         return IsInside(r, c) && Grid[r, c] == 0;
     }
 
-    public bool RowIsFull(int r)
+    private bool RowIsFull(int r)
     {
         for (int c = 0; c < Columns; c++)
         {
@@ -74,14 +72,14 @@ public class GameGrid
 
         return true;
     }
-    public void ClearRow(int r)
+    private void ClearRow(int r)
     {
         for (int c = 0; c < Columns; c++)
         {
             Grid[r, c] = 0;
         }
     }
-    public void MoveRowDown(int r, int count)
+    private void MoveRowDown(int r, int count)
     {
         for (int c = 0; c < Columns; c++)
         {
